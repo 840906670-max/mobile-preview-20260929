@@ -1,0 +1,15 @@
+/* Neutral background pass: keep the original orange accents and typography,
+   while giving the page a calmer medium-gray field behind the sections. */
+:root {
+  --midgray: #858585;
+  --midgray-deep: #737373;
+}
+
+body .pageWaveBackground {
+  background:
+    linear-gradient(135deg, #707070 0%, #929292 46%, #747474 100%) !important;
+}
+
+body .pageWaveBackground::after {
+  background: linear-gradient(90deg, rgba(255,255,255,.08), transparent 60%) !important;
+}

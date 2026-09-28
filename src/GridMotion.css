@@ -1,0 +1,151 @@
+.gridMotion {
+  position: relative;
+  height: clamp(640px, 70vw, 860px);
+  overflow: hidden;
+  border: 1px solid rgba(103,53,37,.16);
+  border-radius: 24px;
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--grid-motion-glow) 18%, transparent), transparent 54%), rgba(250,246,239,.52);
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+.gridMotion:active { cursor: grabbing; }
+.gridMotionCanvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 16px;
+  width: 154%;
+  height: 145%;
+  transform: translate(-50%, -50%) rotate(-11deg);
+}
+.gridMotionRow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(148px, 1fr));
+  gap: 16px;
+  will-change: transform;
+}
+.gridMotionItem {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 17px;
+  box-shadow: 0 18px 34px -28px rgba(58,32,19,.76), inset 0 1px rgba(255,255,255,.7);
+  cursor: zoom-in;
+  transform: scale(1);
+  transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+  will-change: transform;
+}
+.gridMotionItem.is-hovered,
+.gridMotionItem:hover,
+.gridMotionItem:focus-visible {
+  z-index: 5;
+  border-color: rgba(255,255,255,.98);
+  box-shadow: 0 24px 44px -24px rgba(58,32,19,.9), 0 0 0 2px rgba(255,255,255,.46), inset 0 1px rgba(255,255,255,.9);
+  transform: scale(1.08);
+}
+.gridMotionItem:focus-visible { outline: 2px solid rgba(228,88,48,.86); outline-offset: 3px; }
+.gridMotionItem--landscape { grid-column: span 2; }
+.workflowGridTile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  padding: 21px;
+  overflow: hidden;
+  color: #fffaf4;
+  background: linear-gradient(145deg, #512a21, #e45a2d 52%, #231914);
+  isolation: isolate;
+}
+.workflowGridTile::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -30%;
+  background: radial-gradient(circle at 25% 28%, rgba(255,234,185,.95) 0 3%, transparent 19%), radial-gradient(circle at 76% 68%, rgba(229,82,37,.9) 0 14%, transparent 37%);
+}
+.workflowGridTile--style { background: linear-gradient(145deg, #24252b, #826157 54%, #e6b181); }
+.workflowGridTile--threeD { background: linear-gradient(145deg, #17242d, #54aeb9 51%, #ed8956); }
+.workflowGridTile--delivery { background: linear-gradient(145deg, #26160f, #78442a 55%, #d76b31); }
+.workflowGridTile--image::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: var(--workflow-image);
+  background-position: center;
+  background-size: cover;
+  filter: saturate(.82) contrast(1.03);
+  transform: scale(1.025);
+}
+.workflowGridTile--image::before {
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(17,12,10,.08) 12%, rgba(17,12,10,.12) 40%, rgba(17,12,10,.82) 100%);
+}
+.workflowGridTile--image > * { position: relative; z-index: 1; }
+.workflowGridIndex { position: absolute; top: 18px; right: 19px; font-size: .62rem; font-weight: 800; letter-spacing: .12em; color: rgba(255,250,244,.72); }
+.workflowGridTile strong { max-width: 16ch; font-size: clamp(.82rem, 1.55vw, 1.18rem); line-height: 1.14; letter-spacing: -.035em; }
+.workflowGridTile p { max-width: 16ch; margin: 10px 0 0; font-size: .7rem; line-height: 1.55; color: rgba(255,250,244,.8); }
+.gridMotionOverlay { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(239,238,233,.78), transparent 20%, transparent 80%, rgba(239,238,233,.78)), linear-gradient(180deg, rgba(239,238,233,.36), transparent 22%, transparent 78%, rgba(239,238,233,.46)); }
+.gridMotionHint { position: absolute; right: 22px; bottom: 18px; margin: 0; padding: 7px 11px; border: 1px solid rgba(255,255,255,.6); border-radius: 999px; background: rgba(255,248,240,.72); color: #673525; font-size: .58rem; font-weight: 800; letter-spacing: .12em; }
+.gridMotionLightbox {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(28, 18, 14, .72);
+  backdrop-filter: blur(8px);
+  cursor: zoom-out;
+}
+.gridMotionLightboxFrame {
+  position: relative;
+  width: min(88vw, 1000px);
+  height: min(76vh, 760px);
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,.86);
+  border-radius: 24px;
+  box-shadow: 0 28px 90px rgba(0,0,0,.42);
+  cursor: zoom-out;
+}
+.gridMotionLightboxFrame--image {
+  height: min(72vh, 760px);
+  background: #211712;
+  display: grid;
+  place-items: center;
+}
+.gridMotionLightboxImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: zoom-out;
+}
+.gridMotionLightboxFrame > .workflowGridTile {
+  width: 100%;
+  height: 100%;
+}
+@media (max-width: 640px) {
+  .gridMotion { height: 570px; border-radius: 18px; }
+  .gridMotionCanvas { width: 255%; height: 148%; gap: 10px; transform: translate(-50%, -50%) rotate(-9deg); }
+  .gridMotionRow { grid-template-columns: repeat(7, minmax(128px, 1fr)); gap: 10px; }
+  .gridMotionItem { border-radius: 13px; }
+  .gridMotionItem.is-hovered,
+  .gridMotionItem:hover,
+  .gridMotionItem:focus-visible { transform: scale(1.05); }
+  .workflowGridTile { padding: 14px; }
+  .workflowGridTile strong { max-width: 16ch; font-size: .78rem; line-height: 1.12; }
+  .workflowGridTile p { font-size: .58rem; }
+  .workflowGridIndex { top: 12px; right: 13px; font-size: .5rem; }
+  .gridMotionHint { right: 14px; bottom: 13px; font-size: .5rem; }
+  .gridMotionLightbox { padding: 16px; }
+  .gridMotionLightboxFrame { width: 88vw; height: 72vh; border-radius: 18px; }
+  .gridMotionLightboxFrame--image { height: 72vh; }
+}

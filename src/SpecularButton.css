@@ -1,0 +1,74 @@
+.specular-button {
+  --sb-radius: 18px;
+  --sb-tint: #ffffff;
+  --sb-tint-opacity: 0;
+  --sb-blur: 0px;
+  --sb-text-color: #f5f5f5;
+  --sb-line-color: #ffffff;
+  --sb-mx: 50%;
+  --sb-my: 50%;
+  --sb-hot-opacity: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 0 !important;
+  overflow: hidden;
+  margin: 0;
+  font-family: inherit;
+  font-weight: 500;
+  letter-spacing: .01em;
+  line-height: 1;
+  color: var(--sb-text-color);
+  background: color-mix(in srgb, var(--sb-tint) calc(var(--sb-tint-opacity) * 100%), transparent);
+  border-radius: var(--sb-radius);
+  backdrop-filter: blur(var(--sb-blur));
+  -webkit-backdrop-filter: blur(var(--sb-blur));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 8px 24px rgba(0,0,0,.25);
+  cursor: pointer;
+  outline: none;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+
+/* The highlight is masked to this exact button box. Its radial hotspot is
+   written from pointer coordinates, so it cannot drift on resized buttons. */
+.specular-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 1.5px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--sb-hot-opacity);
+  background: radial-gradient(circle 42px at var(--sb-mx) var(--sb-my),
+    rgba(255,255,255,.98) 0,
+    rgba(255,171,104,.98) 20%,
+    rgba(255,122,61,.58) 43%,
+    transparent 72%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity .18s ease;
+}
+
+.specular-button:hover,
+.specular-button:focus-visible {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 10px 28px rgba(240,90,26,.18);
+}
+
+.specular-button:active { transform: scale(.97); }
+.specular-button:focus-visible { outline: 2px solid rgba(255,255,255,.62); outline-offset: 3px; }
+.specular-button:disabled { opacity: .55; cursor: default; }
+.specular-button:disabled:active { transform: none; }
+.specular-button--sm { font-size: .85rem; padding: 10px 22px; }
+.specular-button--md { font-size: 1rem; padding: 14px 30px; }
+.specular-button--lg { font-size: 1.15rem; padding: 18px 40px; }
+.specular-button__fx { display: none; }
+.specular-button__label { position: relative; z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .specular-button { transition: none; }
+  .specular-button::before { transition: none; }
+}

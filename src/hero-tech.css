@@ -1,0 +1,75 @@
+/* Keep the original DESIGN glyph as the layout measure. TechText sits on top
+   of that exact box, so the existing responsive size and title stretch remain
+   untouched while the animated treatment supplies the new surface detail. */
+.heroDesignWord {
+  position: relative;
+  display: inline-block;
+  font-style: normal;
+  font-weight: inherit;
+  color: transparent !important;
+  letter-spacing: inherit !important;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.heroDesignMeasure {
+  display: inline-block;
+  font-style: normal;
+  font-weight: inherit;
+  visibility: hidden;
+  color: transparent !important;
+  letter-spacing: inherit !important;
+  white-space: nowrap;
+}
+
+/* The title's existing responsive rules intentionally make ordinary spans
+   block-level. These two selectors keep the DESIGN replacement in the same
+   single line as the original text so the following BUILD line does not gain
+   an extra blank line. */
+.jsHero .heroTitle .heroDesignWord {
+  display: inline-block !important;
+}
+
+html body .jsHero h1.heroTitle > .heroDesignWord {
+  display: inline-block !important;
+}
+
+.jsHero .heroTitle .heroDesignMeasure {
+  display: inline-block !important;
+}
+
+html body .jsHero h1.heroTitle > .heroDesignWord > .heroDesignMeasure {
+  display: inline-block !important;
+}
+
+.heroDesignTechText {
+  position: absolute;
+  left: -5.5%;
+  top: -26%;
+  width: 111%;
+  height: 152%;
+  overflow: visible;
+  /* Keep the current right edge locked, then extend the word a further 5%
+     toward the left so DESIGN meets the BUILD alignment more precisely. */
+  transform: translateX(calc(-27.1% + 5px)) scaleX(1.491);
+  transform-origin: left center;
+  /* This is a self-running scan, not a hover or drag surface. */
+  pointer-events: none;
+}
+
+.heroDesignTechText .tech-text-canvas {
+  overflow: visible;
+}
+
+/* The introductory portrait is purely visual on phones. Let each swipe pass
+   straight through to the page scroll instead of letting the 3D card surface
+   claim the gesture. */
+@media (max-width: 700px) {
+  .jsHero .heroPortrait .tilted-card-figure,
+  .jsHero .heroPortrait .tilted-card-inner,
+  .jsHero .heroPortrait .tilted-card-img {
+    pointer-events: none !important;
+    touch-action: pan-y !important;
+  }
+}
+

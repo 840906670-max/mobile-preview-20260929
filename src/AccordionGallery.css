@@ -1,0 +1,562 @@
+.accordion-gallery {
+  --ag-accent: #ffffff;
+  --ag-overlay: #060010;
+  --ag-text: #ffffff;
+  --ag-gap: 10px;
+  --ag-radius: 16px;
+  --ag-media-size: 320px;
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--ag-gap);
+  width: 100%;
+  max-width: 100%;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  touch-action: pan-y;
+}
+
+.accordion-gallery--vertical {
+  flex-direction: column;
+}
+
+.ag-panel {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--ag-radius);
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  outline: none;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  background: #2a1c12;
+  box-shadow: 0 10px 30px -18px rgba(42, 22, 8, 0.8);
+  will-change: flex-grow, transform;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+}
+
+.ag-panel:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--ag-accent),
+    0 10px 30px -18px rgba(42, 22, 8, 0.8);
+}
+
+/* The portfolio's global glass-rim treatment adds a rotating conic highlight
+   to interactive cards. It distracts from the dense accordion imagery, so
+   this gallery deliberately keeps a clean, static edge. */
+.accordion-gallery .ag-panel::after {
+  content: none !important;
+  animation: none !important;
+}
+
+.ag-panel__frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.ag-panel__media {
+  --ag-gray: 1;
+  --ag-dim: 0.35;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--ag-media-size);
+  height: 100%;
+  filter: grayscale(var(--ag-gray));
+  will-change: transform, filter;
+}
+
+.ag-panel__media--set {
+  left: 0;
+  width: 100%;
+}
+
+.accordion-gallery--vertical .ag-panel__media {
+  width: 100%;
+  height: var(--ag-media-size);
+}
+
+.ag-panel__media img,
+.ag-panel__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* First panel: the six supplied images fill the available panel space while
+   staying uncropped. The source list lives in main.jsx so the set remains
+   easy to reorder or replace later. */
+.ag-set-collage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  overflow: hidden;
+  background: #120903;
+  transform: none;
+}
+
+.ag-set-collage::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  z-index: 1;
+  display: block;
+  width: 3px;
+  border-radius: 3px;
+  background: #ee3f12;
+  box-shadow: 0 0 12px rgba(238, 63, 18, .55);
+  transform: translateX(-50%);
+}
+
+.ag-set-collage__cell {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+  overflow: hidden;
+  background: #080604;
+}
+
+.ag-set-collage__cell:not(:last-child)::after {
+  display: none;
+}
+
+/* The second (stage-art) set currently has six images. */
+.ag-set-collage--six {
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.ag-set-collage--nine {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.ag-set-collage__cell img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ag-set-collage__caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  padding: 22px 9px 8px;
+  color: #fff;
+  background: linear-gradient(0deg, rgba(0, 0, 0, .78), transparent);
+  font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: .01em;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
+  font-synthesis: none;
+}
+
+.ag-panel__media video {
+  position: absolute;
+  inset: 0;
+}
+
+.ag-panel__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--ag-overlay) 78%, transparent) 100%),
+    color-mix(in srgb, var(--ag-overlay) calc(var(--ag-dim, 0.35) * 100%), transparent);
+}
+
+/* The embedded phone preview may be visually scaled by its host frame while
+   its inner viewport remains wide. Mirror the phone interaction rules with a
+   class as well as the media query so preview and a real handset match. */
+.accordion-gallery.is-mobile-preview {
+  touch-action: pan-y;
+}
+
+.accordion-gallery.is-mobile-preview .ag-panel--active .ag-set-collage {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.accordion-gallery.is-mobile-preview .ag-panel--active .ag-set-collage.ag-set-collage--six {
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+}
+
+.accordion-gallery.is-mobile-preview .ag-panel--active .ag-set-collage.ag-set-collage--nine {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(9, minmax(0, 1fr));
+}
+
+.accordion-gallery.is-mobile-preview .ag-panel:not(.ag-panel--active) .ag-set-collage__caption {
+  display: none;
+}
+
+.accordion-gallery.is-mobile-preview .ag-panel--active .ag-panel__overlay {
+  opacity: 0;
+}
+
+.ag-panel__label {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ag-panel__bar {
+  flex: 0 0 auto;
+  width: 3px;
+  height: 26px;
+  border-radius: 3px;
+  background: var(--ag-accent);
+  opacity: 0;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--ag-accent) 60%, transparent);
+}
+
+.ag-panel__text {
+  color: var(--ag-text);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: clamp(1.2rem, 1.6vw, 1.6rem);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+}
+
+@media (max-width: 700px) {
+  .accordion-gallery {
+    flex-direction: row;
+    perspective: none;
+    height: calc(clamp(360px, 105vw, 520px) + 35px) !important;
+  }
+  .ag-panel {
+    min-height: 0;
+  }
+  .accordion-gallery .ag-panel__media {
+    width: var(--ag-media-size);
+    height: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ag-panel,
+  .ag-panel__media {
+    will-change: auto;
+  }
+}
+
+.ag-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  align-items: start;
+  width: 100vw;
+  height: 100svh;
+  overflow-y: auto;
+  background: #f5f1eb;
+}
+
+.ag-lightbox__header { display: none; }
+
+.ag-lightbox__imageWrap {
+  display: block;
+  width: 100%;
+  min-height: 100svh;
+}
+
+.ag-lightbox__imageWrap > img {
+  display: block;
+  width: min(94vw, 1400px);
+  height: auto;
+  margin: 0 auto;
+}
+
+.ag-lightbox__imageWrap .ag-set-collage--lightbox {
+  position: relative;
+  inset: auto;
+  width: min(94vw, 1180px);
+  height: auto;
+  min-height: 100svh;
+  grid-template-rows: repeat(4, auto);
+  align-content: start;
+  gap: 18px;
+  padding: 76px 0 28px;
+  margin: 0 auto;
+  transform: none;
+}
+
+.ag-lightbox__imageWrap .ag-set-collage--lightbox .ag-set-collage__caption {
+  color: #fff;
+  background: linear-gradient(0deg, rgba(20, 10, 5, .82), transparent);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
+}
+
+.ag-lightbox__imageWrap .ag-set-collage--lightbox .ag-set-collage__cell {
+  aspect-ratio: 16 / 9;
+}
+
+.ag-lightbox__imageWrap .ag-set-collage--lightbox.ag-set-collage--six {
+  grid-template-rows: repeat(3, auto);
+}
+
+.ag-lightbox__imageWrap .ag-set-collage--lightbox.ag-set-collage--nine {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, auto);
+}
+
+.ag-lightbox__imageWrap .ag-set-collage--lightbox .ag-set-collage__cell:not(:last-child)::after {
+  bottom: -11px;
+}
+
+.ag-lightbox__close {
+  position: fixed !important;
+  top: max(16px, env(safe-area-inset-top)) !important;
+  right: max(16px, env(safe-area-inset-right)) !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(63, 40, 25, .28);
+  border-radius: 50%;
+  background: rgba(255, 253, 249, .92);
+  color: #2b1a10;
+  font: 400 28px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+
+/* Portrait phones only: keep the five-panel composition, but stack the
+   Chinese label over its short English line and open the active image in a
+   full-viewport viewer on tap. */
+@media (max-width: 520px) and (orientation: portrait) {
+  .ag-set-collage__caption {
+    padding: 18px 8px 6px;
+    font-size: 12px;
+  }
+
+  /* Keep collapsed panels dense enough to show imagery. The active panel
+     switches to a readable vertical strip for the second-tap lightbox flow. */
+  .ag-set-collage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .ag-set-collage.ag-set-collage--six {
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .ag-set-collage.ag-set-collage--nine {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .ag-panel__media--set .ag-set-collage__caption {
+    display: block;
+    padding: 12px 5px 4px;
+    color: #fff;
+    background: linear-gradient(0deg, rgba(8, 4, 2, .82), transparent);
+    font-size: 7px;
+    font-weight: 700;
+    line-height: 1.15;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, .9);
+  }
+
+  .ag-set-collage__cell img {
+    object-fit: cover;
+  }
+
+  .ag-set-collage::after {
+    display: none;
+  }
+
+  .ag-set-collage__cell:not(:last-child)::after {
+    display: none;
+  }
+
+  .ag-panel__overlay {
+    background: linear-gradient(180deg, transparent 56%, rgba(24, 13, 7, .52) 100%);
+  }
+
+  .ag-panel__label {
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  /* The selected category is the entry point to a dense set of images. A
+     warm translucent glass plate keeps "舞台美术" / "装置艺术" unmistakable
+     over every thumbnail without hiding the artwork beneath it. */
+  .ag-panel--active .ag-panel__label {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    min-height: 54px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 232, 216, .68);
+    border-radius: 12px;
+    background: rgba(238, 79, 22, .62);
+    box-shadow: 0 8px 22px rgba(80, 25, 9, .25), inset 0 1px 0 rgba(255,255,255,.32);
+    -webkit-backdrop-filter: blur(12px) saturate(135%);
+    backdrop-filter: blur(12px) saturate(135%);
+  }
+
+  .ag-panel__bar {
+    width: 2px;
+    height: 32px;
+  }
+
+  .ag-panel__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: .95rem;
+    line-height: 1.05;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .ag-panel__textMain,
+  .ag-panel__textSecondary {
+    display: block;
+  }
+
+  .ag-panel__textSecondary {
+    font-family: "Arial Narrow", "Bahnschrift Condensed", Arial, sans-serif;
+    font-size: .68em;
+    letter-spacing: .06em;
+    line-height: 1.1;
+  }
+
+  .ag-lightbox {
+    padding: 0;
+  }
+
+  /* A compact top rail lets the opened image set keep its category context,
+     matching the site's section-navigation treatment. */
+  .ag-lightbox__header {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    left: 12px;
+    z-index: 3;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    max-width: calc(100vw - 74px);
+    padding: 9px 12px;
+    border: 1px solid rgba(238, 79, 22, .24);
+    border-radius: 999px;
+    color: #5c2a18;
+    background: rgba(255, 249, 242, .84);
+    box-shadow: 0 7px 20px rgba(83, 49, 30, .12), inset 0 1px 0 rgba(255,255,255,.72);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    backdrop-filter: blur(14px) saturate(135%);
+  }
+
+  .ag-lightbox__headerMain {
+    font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif;
+    font-size: .85rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+  }
+
+  .ag-lightbox__headerSecondary {
+    color: #ee4f16;
+    font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif;
+    font-size: .6rem;
+    font-weight: 800;
+    letter-spacing: .09em;
+    white-space: nowrap;
+  }
+
+  .ag-lightbox__imageWrap {
+    width: 100vw;
+  }
+
+.ag-lightbox__imageWrap > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.ag-lightbox__imageWrap .ag-set-collage--lightbox {
+  width: 100%;
+  margin: 0;
+}
+
+  .ag-lightbox__close {
+    width: 38px;
+    height: 38px;
+    font-size: 26px;
+  }
+
+  /* In the phone viewer, keep the same one-column story but let each
+     landscape frame use a readable full-width area. */
+  .ag-lightbox__imageWrap .ag-set-collage--lightbox {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(8, auto);
+    gap: 8px;
+    padding: 64px 10px 14px;
+    background: #f5f1eb;
+  }
+
+  .ag-lightbox__imageWrap .ag-set-collage--lightbox.ag-set-collage--six {
+    grid-template-rows: repeat(6, auto);
+  }
+
+  .ag-lightbox__imageWrap .ag-set-collage--lightbox.ag-set-collage--nine {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(9, auto);
+  }
+
+  .ag-lightbox__imageWrap .ag-set-collage--lightbox .ag-set-collage__cell {
+    aspect-ratio: 2 / 1;
+    background: #e4dbd0;
+  }
+
+  .ag-lightbox__imageWrap .ag-set-collage--lightbox .ag-set-collage__cell:not(:last-child)::after {
+    bottom: -3px;
+  }
+}

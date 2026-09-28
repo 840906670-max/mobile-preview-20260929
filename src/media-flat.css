@@ -1,0 +1,381 @@
+/* Trial layout for the expertise rail: every supplied image is visible as a
+   regular tile, with no single center panel or accordion focus state. */
+.mediaFlatGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.mediaFlatCard {
+  position: relative;
+  min-width: 0;
+  min-height: clamp(164px, 18vw, 276px);
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.48);
+  border-radius: 10px;
+  background: #211c19;
+  box-shadow: 0 12px 26px rgba(42,22,8,.14);
+  isolation: isolate;
+}
+
+.mediaFlatCard img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  filter: saturate(.94) contrast(1.02);
+  transition: transform .45s ease, filter .45s ease;
+}
+
+.mediaFlatCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 42%, rgba(12,8,6,.82) 100%);
+}
+
+.mediaFlatCard figcaption {
+  position: absolute;
+  right: 12px;
+  bottom: 11px;
+  left: 12px;
+  z-index: 2;
+  display: grid;
+  gap: 4px;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,.55);
+}
+
+.mediaFlatCard figcaption span {
+  color: #ff8a57;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.mediaFlatCard figcaption strong {
+  font-size: clamp(.76rem, 1.12vw, .98rem);
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.mediaFlatCard:hover img,
+.mediaFlatCard:focus-within img {
+  filter: saturate(1.08) contrast(1.04);
+  transform: scale(1.045);
+}
+
+@media (max-width: 980px) {
+  .mediaFlatGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .mediaFlatGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mediaFlatCard {
+    min-height: clamp(148px, 34vw, 220px);
+    border-radius: 8px;
+  }
+
+  .mediaFlatCard figcaption {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+  }
+
+  .mediaFlatCard figcaption span { font-size: 7px; }
+  .mediaFlatCard figcaption strong { font-size: .72rem; }
+}
+
+@media (max-width: 390px) {
+  .mediaFlatGrid { gap: 6px; }
+  .mediaFlatCard { min-height: 150px; }
+  .mediaFlatCard figcaption span { display: none; }
+}
+
+/* Keep the active work title in the quiet gap between the expertise rail and
+   its image. It mirrors the lower copy's type/color, one step smaller. */
+.mediaGallery {
+  padding-bottom: 18px;
+}
+
+.mediaGalleryCarouselShell {
+  margin-top: clamp(6px, 1vw, 12px);
+}
+
+.mediaGalleryBottomCopy {
+  margin-top: 14px;
+}
+
+.mediaGalleryImageMeta {
+  display: grid;
+  min-height: 2.6em;
+  margin: 0 auto 3px;
+  place-items: center;
+  text-align: center;
+}
+
+.mediaGalleryImageTitle {
+  margin: 0;
+  color: #24201c;
+  font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif !important;
+  font-size: clamp(1rem, 1.7vw, 1.18rem);
+  font-weight: 900;
+  letter-spacing: .02em;
+  line-height: 1.3;
+}
+
+.mediaGalleryImageCategory {
+  display: inline-block;
+  margin-top: .24em;
+  padding: 0 .16em .12em;
+  color: #fff;
+  font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif !important;
+  font-size: clamp(1.05rem, 1.8vw, 1.28rem);
+  font-weight: 900;
+  letter-spacing: .02em;
+  line-height: 1.25;
+  opacity: 1;
+  border-bottom: 3px solid #ee4f16;
+}
+
+/* The expertise section now uses the supplied FlexCarousel interaction. Keep
+   the frame only as layout space: the image canvas should sit directly on the
+   page without a second square panel behind it. */
+.mediaFlexCarouselFrame {
+  /* Must match FlexCarousel's cardHeight. The WebGL card is vertically
+     centered inside this frame, so the corner layer must follow the card,
+     not the full (taller) interaction area. */
+  --media-card-height: 88%;
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 49vw, 490px);
+  /* This is the visible-image viewport.  The carousel can still slide inside
+     it, but the resting image always has a clearly readable rounded edge. */
+  overflow: hidden;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  box-shadow: none;
+  isolation: isolate;
+}
+
+/* A visible top-layer corner mask is needed for the resting WebGL frame:
+   static WebGL pixels can otherwise look square even after their canvas has
+   been clipped.  Its color matches the page ground, so the four corners blend
+   directly into the expertise section rather than looking like a border. */
+.mediaFlexCarouselFrame::after {
+  --media-corner-size: 26px;
+  content: "";
+  position: absolute;
+  z-index: 5;
+  inset: calc((100% - var(--media-card-height)) / 2) 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 100% 100%, transparent calc(var(--media-corner-size) - 1px), #dfded8 var(--media-corner-size)) 0 0 / var(--media-corner-size) var(--media-corner-size) no-repeat,
+    radial-gradient(circle at 0 100%, transparent calc(var(--media-corner-size) - 1px), #dfded8 var(--media-corner-size)) 100% 0 / var(--media-corner-size) var(--media-corner-size) no-repeat,
+    radial-gradient(circle at 100% 0, transparent calc(var(--media-corner-size) - 1px), #dfded8 var(--media-corner-size)) 0 100% / var(--media-corner-size) var(--media-corner-size) no-repeat,
+    radial-gradient(circle at 0 0, transparent calc(var(--media-corner-size) - 1px), #dfded8 var(--media-corner-size)) 100% 100% / var(--media-corner-size) var(--media-corner-size) no-repeat;
+}
+
+.mediaFlexCarouselFrame .flex-carousel {
+  min-height: 100%;
+  border-radius: 14px;
+  /* Vertical swipes keep scrolling the page; horizontal swipes rotate the carousel. */
+  touch-action: pan-y;
+  /* The carousel no longer consumes the wheel. Let vertical wheel input
+     bubble to the page instead of trapping it at the canvas boundary. */
+  overscroll-behavior: auto;
+}
+
+/* OGL paints the cards into a WebGL canvas. Clip that actual paint surface as
+   well as its wrapper; otherwise the card can appear square while moving even
+   though the surrounding CSS box has a radius. */
+.mediaFlexCarouselFrame .flex-carousel,
+.mediaFlexCarouselFrame .flex-carousel > canvas {
+  overflow: hidden;
+  border-radius: inherit;
+  clip-path: inset(0 round 18px);
+}
+
+.mediaImageLightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: clamp(14px, 4vw, 24px);
+  background: rgba(26, 22, 19, .72);
+  backdrop-filter: blur(10px);
+  animation: media-lightbox-fade .24s ease both;
+}
+
+/* A focused image is a full-screen view. Hide sticky section rails until it
+   closes so an incoming navigation never overlays the picture. */
+body.media-lightbox-open .sectionNav,
+body.media-lightbox-open > .pageScale > main > .siteHeader {
+  visibility: hidden !important;
+}
+
+.mediaImageLightboxCard {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  width: min(100%, 920px);
+  max-width: 100%;
+  max-height: 90vh;
+  animation: media-lightbox-pop .42s cubic-bezier(.22, .8, .26, 1) both;
+}
+
+.mediaImageLightboxCard img {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  border: 1px solid rgba(255,255,255,.62);
+  border-radius: 12px;
+  box-shadow: 0 28px 80px rgba(0,0,0,.38);
+  cursor: zoom-out;
+}
+
+.mediaImageLightboxClose {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 2;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 50%;
+  background: rgba(36,32,28,.82);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mediaImageLightboxMeta {
+  display: grid;
+  gap: 3px;
+  margin-top: 10px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,.45);
+}
+
+.mediaImageLightboxMeta strong {
+  font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.mediaImageLightboxMeta span {
+  font-size: .72rem;
+  opacity: .78;
+}
+
+@keyframes media-lightbox-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes media-lightbox-pop {
+  from { opacity: 0; transform: scale(.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 700px) {
+  .mediaFlexCarouselFrame {
+    height: 370px;
+  }
+}
+
+@media (max-width: 520px) and (orientation: portrait) {
+  .mediaGalleryCarouselShell {
+    margin-top: 4px;
+  }
+
+  .mediaGalleryImageMeta {
+    min-height: 2.55em;
+    margin-bottom: 2px;
+  }
+
+  .mediaGalleryImageTitle {
+    font-size: 1.16rem;
+    font-weight: 900;
+    letter-spacing: .01em;
+  }
+
+  .mediaGalleryImageCategory {
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: .01em;
+    border-bottom-width: 3px;
+  }
+
+  .mediaImageLightbox {
+    padding: 10px;
+  }
+
+  .mediaImageLightboxCard img {
+    width: 100%;
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 9px;
+  }
+
+  .mediaImageLightboxMeta strong {
+    font-size: .9rem;
+  }
+
+  .mediaFlexCarouselFrame {
+    height: 284px;
+    margin-inline: -2px;
+    width: calc(100% + 4px);
+    border-radius: 13px;
+    --media-corner-size: 20px;
+  }
+
+  .mediaFlexCarouselFrame .flex-carousel {
+    border-radius: 11px;
+    clip-path: inset(0 round 13px);
+  }
+
+  .mediaFlexCarouselFrame .flex-carousel > canvas {
+    clip-path: inset(0 round 13px);
+  }
+
+  .mediaGalleryBottomCopy {
+    margin-top: 12px;
+  }
+
+  .mediaFlexCarouselFrame .flex-carousel__caption {
+    right: 14px;
+    bottom: 13px;
+    left: 14px;
+  }
+
+  .mediaFlexCarouselFrame .flex-carousel__title {
+    font-size: .78rem;
+  }
+
+  .mediaFlexCarouselFrame .flex-carousel__subtitle {
+    font-size: .58rem;
+  }
+
+}

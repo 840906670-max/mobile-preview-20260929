@@ -1,0 +1,220 @@
+.halftoneReveal {
+  position: relative;
+  height: clamp(360px, 62vw, 720px);
+  min-height: 360px;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: grab;
+  outline: none;
+  border: 1px solid rgba(255,255,255,.68);
+  border-radius: 26px;
+  background: #44271c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 24px 70px rgba(114,47,20,.14);
+  touch-action: pan-y;
+}
+
+.halftoneReveal:active {
+  cursor: grabbing;
+}
+
+.halftoneRevealLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.halftoneRevealLayer picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.halftoneRevealLayer img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Both source frames share the same subject. Keep the crop locked to the
+     person's center instead of letting each image drift independently. */
+  object-position: 50% 50%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* The replacement stills use slightly different source widths. Offset each
+   layer by the same subject anchor so the person stays locked when the
+   reveal circle moves between the live and 3D frames. */
+.halftoneRevealLayer--base img {
+  object-position: 54% 50%;
+}
+
+.halftoneRevealLayer--reveal img {
+  object-position: 47% 50%;
+}
+
+.halftoneRevealLayer--base {
+  z-index: 1;
+}
+
+.halftoneRevealRevealWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.halftoneRevealLayer--reveal {
+  clip-path: circle(0 at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  transition: clip-path .7s cubic-bezier(.22,1,.36,1);
+}
+
+.halftoneReveal.is-revealed .halftoneRevealLayer--reveal,
+.halftoneReveal:focus-visible .halftoneRevealLayer--reveal {
+  clip-path: circle(18% at var(--reveal-x, 50%) var(--reveal-y, 50%));
+}
+
+.halftoneReveal.is-revealed .halftoneRevealRevealWrap,
+.halftoneReveal:focus-visible .halftoneRevealRevealWrap {
+  filter: drop-shadow(0 0 1.4px rgba(238, 79, 22, .98)) drop-shadow(0 0 4px rgba(238, 79, 22, .58)) drop-shadow(0 0 9px rgba(255, 117, 55, .28));
+}
+
+.halftoneRevealFrame {
+  position: absolute;
+  inset: 18px;
+  z-index: 4;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,.42);
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(255,171,104,.22), 0 0 32px rgba(255,171,104,.12);
+}
+
+.halftoneRevealLabels {
+  position: absolute;
+  z-index: 5;
+  left: clamp(28px, 5vw, 72px);
+  bottom: clamp(28px, 5vw, 72px);
+  color: #fffaf5;
+  pointer-events: none;
+}
+
+.halftoneRevealLabel {
+  display: block;
+  font-size: clamp(.9rem, 2.2vw, 2.6rem);
+  font-weight: 800;
+  line-height: .95;
+  letter-spacing: -.055em;
+  text-shadow: 0 3px 22px rgba(0,0,0,.32);
+  transition: opacity .55s ease, transform .7s cubic-bezier(.22,1,.36,1);
+}
+
+.halftoneRevealLabel--second {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: max-content;
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+.halftoneReveal.is-revealed .halftoneRevealLabel--first,
+.halftoneReveal:focus-visible .halftoneRevealLabel--first {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.halftoneReveal.is-revealed .halftoneRevealLabel--second,
+.halftoneReveal:focus-visible .halftoneRevealLabel--second {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.halftoneRevealHint {
+  position: absolute;
+  z-index: 5;
+  top: 32px;
+  right: 34px;
+  color: rgba(255,250,245,.86);
+  font-size: 10px;
+  font-weight: 760;
+  letter-spacing: .16em;
+  pointer-events: none;
+}
+
+.halftoneSectionHead {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 34px;
+}
+
+.halftoneSectionHead h2 {
+  margin: 10px 0 0;
+  color: #1b1b19;
+  font-size: clamp(2.4rem, 5vw, 5.6rem);
+  line-height: .92;
+  letter-spacing: -.065em;
+}
+
+.halftoneSectionHead > p {
+  max-width: 30ch;
+  margin: 0 0 4px;
+  color: rgba(27,27,25,.62);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+@media (max-width: 640px) {
+  .halftoneSection {
+    padding-top: 76px;
+    padding-bottom: 76px;
+  }
+
+  .halftoneSectionHead {
+    display: block;
+  }
+
+  .halftoneSectionHead > p {
+    margin-top: 16px;
+  }
+
+  .halftoneReveal {
+    height: 520px;
+    min-height: 0;
+    border-radius: 20px;
+  }
+
+  .halftoneRevealFrame {
+    inset: 12px;
+    border-radius: 14px;
+  }
+
+  .halftoneRevealHint {
+    top: 24px;
+    right: 22px;
+    font-size: 0;
+    letter-spacing: 0;
+  }
+
+  .halftoneRevealHint::after {
+    content: '点击定位 / 按住拖动';
+    font-size: 10px;
+    letter-spacing: .05em;
+  }
+
+  .halftoneRevealLabels {
+    left: 24px;
+    bottom: 28px;
+  }
+
+  .halftoneRevealLabel {
+    font-size: clamp(1rem, 5vw, 1.9rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halftoneRevealLayer--reveal,
+  .halftoneRevealLabel {
+    transition: none;
+  }
+}

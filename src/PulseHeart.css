@@ -1,0 +1,123 @@
+.pulse-heart {
+  --ph-size: 28px;
+  --ph-corner: 999px;
+  --ph-pill: transparent;
+  --ph-idle: rgba(246,243,237,.58);
+  --ph-liked: #ff7a3d;
+  --ph-text: #f5f5f5;
+  --ph-duration: 560ms;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ph-corner);
+  background: none;
+  color: var(--ph-text);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 160ms cubic-bezier(.23, 1, .32, 1);
+}
+
+.pulse-heart:active {
+  transform: scale(.95);
+}
+
+.pulse-heart:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ph-liked) 70%, transparent);
+  outline-offset: 3px;
+}
+
+.pulse-heart__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--ph-size) * .25);
+  padding: calc(var(--ph-size) * .16);
+  border-radius: var(--ph-corner);
+  background: var(--ph-pill);
+  transform-origin: center;
+}
+
+.pulse-heart__heart {
+  display: block;
+  width: var(--ph-size);
+  height: var(--ph-size);
+  color: var(--ph-idle);
+  transform-origin: center;
+  transition: color 160ms ease;
+}
+
+.pulse-heart__heart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pulse-heart[data-liked='true'] .pulse-heart__heart {
+  color: var(--ph-liked);
+}
+
+.pulse-heart[data-liked='true'] .pulse-heart__heart svg {
+  fill: currentColor;
+}
+
+.pulse-heart[data-running] .pulse-heart__heart {
+  animation: pulse-heart-beat var(--ph-duration) cubic-bezier(.22, .8, .26, 1) both;
+}
+
+.pulse-heart[data-running] .pulse-heart__pill {
+  animation: pulse-heart-pill var(--ph-duration) cubic-bezier(.22, .8, .26, 1) both;
+}
+
+.pulse-heart__count {
+  color: var(--ph-text);
+  font-size: calc(var(--ph-size) * .5);
+  line-height: 1;
+}
+
+.pulse-heart__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@keyframes pulse-heart-beat {
+  0% { transform: scale(1); }
+  28% { transform: scale(.3); }
+  48% { transform: scale(1.22); }
+  72% { transform: scale(.92); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-heart-pill {
+  0%, 100% { transform: scale(1); }
+  34% { transform: scale(.97); }
+  58% { transform: scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-heart,
+  .pulse-heart__heart,
+  .pulse-heart__pill {
+    transition: none;
+    animation: none !important;
+  }
+}

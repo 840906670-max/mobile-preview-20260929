@@ -1,0 +1,52 @@
+.pixel-card {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(255,255,255,.32);
+  border-radius: 30px;
+  background: rgba(24,24,22,.38);
+  transition: border-color .2s ease, box-shadow .3s ease;
+}
+
+.pixel-card:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(240,90,26,.23), transparent 66%);
+  opacity: 0;
+  transition: opacity .8s ease;
+  pointer-events: none;
+}
+
+.pixel-card:hover,
+.pixel-card:focus-within {
+  border-color: rgba(255,147,87,.78);
+  box-shadow: 0 0 0 1px rgba(240,90,26,.2), 0 34px 90px rgba(105,38,11,.2);
+}
+
+.pixel-card:hover:before,
+.pixel-card:focus-within:before {
+  opacity: 1;
+}
+
+.pixel-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.pixel-card > .resumeCard {
+  position: relative;
+  inset: auto;
+  z-index: 1;
+  width: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 28px;
+}

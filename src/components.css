@@ -1,0 +1,753 @@
+/* TiltedCard hero integration */
+.heroPortrait.portraitTilt {
+  overflow: visible;
+}
+/* The photo fills the portrait box edge to edge. `figure` ships with a default
+   1em/40px margin, which was silently pushing the picture off its own frame. */
+.heroPortrait > .tilted-card-figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: block;
+  width: auto !important;
+  height: auto !important;
+  perspective: 1000px;
+}
+.heroPortrait .tilted-card-inner,
+.heroPortrait .tilted-card-img {
+  border-radius: 18px !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+.heroPortrait,
+.heroPortrait > .tilted-card-figure {
+  border-radius: 18px !important;
+}
+.jsHero .heroPortrait {
+  clip-path: inset(0 round 18px) !important;
+}
+.heroPortrait .tilted-card-img {
+  object-fit: cover;
+  object-position: 50% 18%;
+}
+
+/* DomeGallery section */
+.domeGallerySection {
+  min-height: auto;
+  padding-top: 72px;
+  padding-bottom: 56px;
+}
+.domeGalleryBar {
+  position: sticky;
+  top: 0;
+  z-index: 55;
+  margin-bottom: 30px;
+  border-block: 1px solid rgba(111,57,38,.18);
+  background: linear-gradient(120deg, rgba(255,164,108,.42), rgba(255,140,80,.32) 58%, rgba(255,160,95,.36));
+  box-shadow: inset 0 1px 0 rgba(255,244,234,.36), 0 8px 24px rgba(130,66,39,.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.domeGalleryBarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 58px;
+}
+.domeGalleryBarTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.domeGalleryBarTitle .sectionLabel {
+  margin: 0;
+  color: #673525;
+  font-size: 10px;
+}
+.domeGalleryBarTitle h2 {
+  margin: 0;
+  color: #673525;
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: .02em;
+}
+.domeGalleryTabs {
+  display: flex;
+  gap: 8px;
+}
+.domeGalleryTabs button {
+  min-height: 32px;
+  padding: 6px 18px;
+  border: 1px solid rgba(103,53,37,.16);
+  border-radius: 999px;
+  background: rgba(255,237,222,.14);
+  color: #673525;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease;
+}
+.domeGalleryTabs button:hover { border-color: rgba(103,53,37,.4); }
+.domeGalleryTabs button.is-active {
+  border-color: rgba(103,53,37,.26);
+  background: rgba(255,255,255,.52);
+}
+.domeStage {
+  position: relative;
+  height: clamp(360px, 48vh, 520px);
+  border-radius: 10px;
+  overflow: hidden;
+  background: transparent;
+}
+.domeStage .sphere-root { border-radius: 10px; }
+
+/* Narrow screens: keep the stage close to square so the tile band still
+   covers it top to bottom. */
+@media (max-width: 900px) {
+  .domeStage {
+    height: min(88vw, 52vh);
+    min-height: 300px;
+  }
+}
+
+body.dome-in-view .siteHeader.jsHero {
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* DriftWall section */
+.driftWallSection {
+  padding-top: 72px;
+  padding-bottom: 104px;
+}
+.driftWallIntro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 26px;
+}
+.driftWallIntroTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.driftWallIntroTitle .sectionLabel {
+  margin: 0;
+  color: #f05a1a;
+  font-size: 10px;
+}
+.driftWallIntroTitle h2 {
+  margin: 0;
+  color: #673525;
+  font-size: clamp(22px, 2vw, 30px);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.driftWallIntroLead {
+  max-width: 38ch;
+  margin: 0;
+  color: rgba(27,27,25,.58);
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: right;
+}
+.driftWallStage {
+  position: relative;
+  height: clamp(480px, 68vh, 700px);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(103,53,37,.28);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(55,37,30,.98), rgba(23,23,21,.99) 56%, rgba(45,28,23,.98)),
+    #1b1b19;
+  box-shadow:
+    0 34px 80px -58px rgba(75,31,13,.78),
+    inset 0 1px 0 rgba(255,239,224,.08);
+}
+.driftWallStage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .26;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 84px 84px;
+}
+.driftWallStage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(240,90,26,.08);
+}
+.driftWallStage .drift-wall {
+  z-index: 1;
+}
+.driftWallStage .drift-wall__plane {
+  cursor: default;
+}
+.driftWallStage .drift-wall__inner {
+  background: #28211e;
+}
+.driftWallStage .drift-wall__tile.is-active .drift-wall__inner,
+.driftWallStage .drift-wall__tile:focus-visible .drift-wall__inner {
+  box-shadow:
+    0 30px 66px -20px rgba(0,0,0,.86),
+    0 0 0 1px rgba(240,90,26,.55),
+    0 0 28px rgba(240,90,26,.12);
+}
+
+/* CardSwap section */
+.cardSwapSection {
+  min-height: clamp(900px, 106vh, 1120px);
+  margin-top: -100px;
+  padding-top: 28px;
+  padding-bottom: 116px;
+}
+.cardSwapBar {
+  margin-bottom: 48px;
+}
+.cardSwapBarIndexes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cardSwapBarIndexes span {
+  min-width: 34px;
+  padding: 6px 9px;
+  border: 1px solid rgba(103,53,37,.16);
+  border-radius: 999px;
+  background: rgba(255,237,222,.14);
+  color: #673525;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-align: center;
+}
+.cardSwapGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  align-items: center;
+}
+.cardSwapCopy h2 {
+  margin: 10px 0 0;
+  font-size: clamp(30px, 3.4vw, 52px);
+  letter-spacing: -.03em;
+}
+.cardSwapLead {
+  margin: 18px 0 0;
+  max-width: 27ch;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(27,27,25,.62);
+}
+.cardSwapList {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px solid rgba(103,53,37,.16);
+  display: grid;
+  gap: 12px;
+  max-width: 340px;
+}
+.cardSwapListItem {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(27,27,25,.5);
+}
+.cardSwapListIndex {
+  color: #f05a1a;
+  font-weight: 700;
+}
+.cardSwapListLabel {
+  color: #673525;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.cardSwapListEn {
+  margin-left: auto;
+  font-size: 10px;
+  opacity: .72;
+}
+.cardSwapStage {
+  position: relative;
+  min-width: 0;
+  min-height: clamp(780px, 86vh, 980px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cardSwapStage .card-swap-container {
+  position: relative;
+  inset: auto;
+  transform: translate(-5%, 3%) scale(1);
+  transform-origin: center center;
+}
+.cardSwapStage .card {
+  border-radius: 18px;
+  border: 1px solid rgba(103,53,37,.2);
+  background: linear-gradient(160deg, rgba(248,245,239,.95) 0%, rgba(244,229,216,.9) 100%);
+  color: #1b1b19;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 28px 60px -34px rgba(80,32,10,.6), inset 0 1px 0 rgba(255,255,255,.55);
+  backdrop-filter: blur(14px) saturate(1.05);
+  cursor: pointer;
+  font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+.cardSwapStage .card:focus-visible {
+  outline: 2px solid #f05a1a;
+  outline-offset: 5px;
+}
+.swapCardBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(103,53,37,.16);
+  background: linear-gradient(180deg, rgba(255,255,255,.74), rgba(255,246,238,.44));
+}
+.swapCardBarDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #f05a1a;
+  box-shadow: 0 0 0 4px rgba(240,90,26,.16);
+  flex: none;
+}
+.swapCardBarLabel {
+  font-size: 17px;
+  font-weight: 700;
+  color: #673525;
+  letter-spacing: .02em;
+  font-family: inherit;
+}
+.swapCardBarEn {
+  margin-left: auto;
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(103,53,37,.62);
+  font-family: inherit;
+}
+.swapCardMedia {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: linear-gradient(150deg, rgba(240,90,26,.16), rgba(27,27,25,.12));
+}
+.swapCardMedia img,
+.swapCardMedia video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swapCardMedia--withCopy .swapCardPoster {
+  filter: blur(.45px) saturate(.97);
+  transform: scale(1.035);
+}
+.swapCardMedia--softPoster .swapCardPoster {
+  filter: blur(1.25px) saturate(.9);
+  transform: scale(1.055);
+}
+.swapCardImageCopy {
+  position: absolute;
+  z-index: 3;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  padding: 16px 18px 17px;
+  border: 1px solid rgba(255, 246, 238, .52);
+  border-radius: 16px;
+  color: #fffaf2;
+  background: linear-gradient(135deg, rgba(255, 139, 82, .86), rgba(255, 193, 145, .74));
+  box-shadow: 0 16px 38px rgba(110, 44, 18, .2), inset 0 1px 0 rgba(255, 255, 255, .42);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  filter: none;
+  transform: none;
+}
+.swapCardImageCopy > * {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
+}
+.swapCardImageCopy strong {
+  display: block;
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  -webkit-text-stroke: .8px #4a1d0b;
+  paint-order: stroke fill;
+  text-shadow: 0 2px 10px rgba(92, 28, 8, .28);
+}
+.swapCardImageCopy p {
+  margin: 9px 0 0;
+  font-size: clamp(1.03rem, 1.55vw, 1.28rem);
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: .015em;
+  color: rgba(255, 250, 242, .97);
+  -webkit-text-stroke: .45px rgba(74, 29, 11, .94);
+  paint-order: stroke fill;
+  text-shadow: 0 1px 7px rgba(92, 28, 8, .24);
+}
+.swapCardMedia video {
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+.swapCardMedia video.is-playing {
+  opacity: 1;
+}
+.swapCardPlaceholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  overflow: hidden;
+  color: #fff9f2;
+  isolation: isolate;
+}
+.swapCardPlaceholder::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: -22%;
+  background: radial-gradient(circle at 26% 26%, rgba(255,241,202,.92) 0 2%, transparent 18%), radial-gradient(circle at 72% 65%, rgba(255,126,74,.75) 0 11%, transparent 32%), linear-gradient(135deg, #512a21, #ee5a27 48%, #221816);
+  transform: rotate(-11deg);
+}
+.swapCardPlaceholder::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 18%, rgba(17,11,9,.72) 100%);
+}
+.swapCardPlaceholder--style::before { background: radial-gradient(circle at 70% 18%, #ffdcb8 0 4%, transparent 19%), radial-gradient(circle at 30% 62%, rgba(206,73,41,.86) 0 14%, transparent 37%), linear-gradient(145deg, #1e2026, #60514d 52%, #e1b48b); }
+.swapCardPlaceholder--threeD::before { background: radial-gradient(ellipse at 50% 42%, rgba(181,233,241,.92) 0 7%, transparent 23%), conic-gradient(from 225deg at 50% 48%, #17242d, #71bac4, #f18b56, #17242d); }
+.swapCardPlaceholder--delivery::before { background: radial-gradient(circle at 70% 27%, rgba(255,227,171,.98) 0 3%, transparent 18%), radial-gradient(circle at 30% 72%, rgba(236,79,22,.94) 0 11%, transparent 32%), linear-gradient(128deg, #24150f, #78442a 52%, #d66b31); }
+.swapCardPlaceholderGrid {
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255,255,255,.36);
+  background: linear-gradient(90deg, transparent 49.7%, rgba(255,255,255,.22) 49.7% 50.3%, transparent 50.3%), linear-gradient(transparent 49.7%, rgba(255,255,255,.22) 49.7% 50.3%, transparent 50.3%);
+}
+.swapCardPlaceholder strong { max-width: 10ch; font-size: clamp(1.7rem, 3.6vw, 3.25rem); line-height: 1; letter-spacing: -.07em; }
+.swapCardPlaceholder p {
+  width: 100%;
+  max-width: none;
+  margin: 13px 0 0;
+  padding: 8px 10px 9px;
+  border-left: 3px solid rgba(255,245,230,.86);
+  background: rgba(25,14,10,.26);
+  font-size: clamp(1.08rem, 1.65vw, 1.42rem);
+  font-weight: 700;
+  line-height: 1.38;
+  letter-spacing: .02em;
+  color: rgba(255,249,242,.96);
+}
+.swapCardPlaceholder em { position: absolute; top: 28px; right: 28px; font-size: .58rem; font-style: normal; letter-spacing: .14em; color: rgba(255,249,242,.72); }
+.swapCardHint {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #673525;
+  background: rgba(255,246,238,.74);
+  border: 1px solid rgba(103,53,37,.18);
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 900px) {
+  .driftWallSection {
+    padding-top: 48px;
+    padding-bottom: 72px;
+  }
+  .driftWallIntro {
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .driftWallIntroLead {
+    max-width: 32ch;
+    font-size: 12px;
+  }
+  .driftWallStage {
+    height: min(68vh, 560px);
+    min-height: 390px;
+  }
+
+  .cardSwapGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .cardSwapSection {
+    margin-top: -74px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+  .cardSwapBar {
+    margin-bottom: 32px;
+  }
+  .cardSwapStage {
+    min-height: 620px;
+  }
+  .cardSwapStage .card-swap-container {
+    transform: scaleX(.946) scaleY(.86) translate(-5%, 2%);
+  }
+  .cardSwapList {
+    margin-top: 22px;
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .domeGalleryBarInner {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding-block: 9px;
+  }
+
+  .domeGalleryBarTitle {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .domeGalleryBarTitle h2 {
+    font-size: 16px;
+  }
+
+  .domeGalleryTabs {
+    flex: 1 1 100%;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  .domeGalleryTabs button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: 8px;
+    font-size: 12px;
+  }
+
+  .cardSwapBar .domeGalleryBarInner {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .cardSwapBarIndexes {
+    max-width: 58%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .cardSwapBarIndexes::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cardSwapBarIndexes {
+    gap: 5px;
+  }
+  .cardSwapBarIndexes span {
+    min-width: 28px;
+    padding: 5px 7px;
+    font-size: 9px;
+  }
+  .driftWallIntro {
+    display: block;
+    margin-bottom: 18px;
+  }
+  .driftWallIntroTitle {
+    gap: 10px;
+  }
+  .driftWallIntroTitle h2 {
+    font-size: 22px;
+  }
+  .driftWallIntroLead {
+    margin-top: 12px;
+    max-width: 29ch;
+    text-align: left;
+  }
+  .driftWallStage {
+    height: 390px;
+    min-height: 0;
+    border-radius: 8px;
+  }
+
+  .cardSwapCopy h2 {
+    font-size: 30px;
+  }
+  .cardSwapSection {
+    min-height: 0;
+  }
+  .cardSwapStage {
+    min-height: 520px;
+  }
+  .cardSwapStage .card-swap-container {
+    transform: scaleX(.748) scaleY(.68) translate(-5%, 2%);
+  }
+  /* 卡片整体缩放了，标题栏字号预先放大，缩放后仍然看得清 */
+  .swapCardBar {
+    gap: 14px;
+    padding: 20px 24px;
+  }
+  .swapCardBarDot {
+    width: 13px;
+    height: 13px;
+  }
+  .swapCardBarLabel {
+    font-size: 24px;
+  }
+  .swapCardBarEn {
+    font-size: 15px;
+    letter-spacing: .12em;
+  }
+  .swapCardPlaceholder p {
+    margin-top: 12px;
+    padding: 9px 11px 10px;
+    font-size: 1.5rem;
+  }
+  .swapCardImageCopy {
+    padding: 18px 20px 19px;
+  }
+  .swapCardImageCopy strong {
+    font-size: 1.7rem;
+  }
+  .swapCardImageCopy p {
+    margin-top: 12px;
+    font-size: 1.5rem;
+    line-height: 1.38;
+  }
+}
+
+/* Bilingual section headings: keep the English short, secondary, and on the
+   same line while giving the main title a two-step size increase. */
+.bilingualHeading .headingEn {
+  display: inline-block;
+  margin-left: .2em;
+  color: currentColor;
+  font-family: "Arial Narrow", "Bahnschrift Condensed", Arial, sans-serif;
+  font-size: .34em;
+  font-weight: 800;
+  letter-spacing: .08em;
+  line-height: 1;
+  text-transform: uppercase;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.domeGalleryBarTitle h2,
+.cardSwapBar .domeGalleryBarTitle h2 {
+  font-size: 20px;
+}
+
+.driftWallIntroTitle h2 {
+  font-size: clamp(24px, 2.2vw, 32px);
+}
+
+@media (max-width: 560px) {
+  .domeGalleryBarTitle h2,
+  .cardSwapBar .domeGalleryBarTitle h2 {
+    font-size: 18px;
+  }
+
+  .driftWallIntroTitle h2 {
+    font-size: 24px;
+  }
+}
+
+/* SpecularButton overrides inside existing components */
+.specular-button.navCta {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+.contactActions .specular-button {
+  border: 1px solid rgba(27,27,25,.14) !important;
+}
+
+/* Bilingual copy: Chinese first, concise English beneath it. */
+.bilingualCopy {
+  display: block;
+  width: 100%;
+}
+
+.bilingualCopyZh,
+.bilingualCopyEn {
+  display: block;
+}
+
+.bilingualCopyEn {
+  margin-top: .42em;
+  color: currentColor;
+  font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif !important;
+  font-size: .68em;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: .045em;
+  opacity: .64;
+  text-transform: uppercase;
+}
+
+.thirdProjectStatementEn {
+  margin: 16px 0 0;
+  color: rgba(45, 34, 28, .66);
+  font-family: "DeYiHeiLocal", "得意黑", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: clamp(.8rem, 1.2vw, 1rem);
+  font-weight: 700;
+  letter-spacing: .06em;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.swapCardImageCopy .bilingualCopyEn,
+.swapCardPlaceholder .bilingualCopyEn {
+  margin-top: .45em;
+  font-size: .64em;
+  line-height: 1.35;
+}
+
+.processCardContent .bilingualCopyEn {
+  font-size: .76em;
+}
+
+@media (max-width: 520px) {
+  .bilingualCopyEn {
+    margin-top: .34em;
+    font-size: .7em;
+    letter-spacing: .03em;
+  }
+
+  .thirdProjectStatementEn {
+    margin-top: 12px;
+    font-size: .74rem;
+    letter-spacing: .035em;
+  }
+}
